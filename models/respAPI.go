@@ -42,3 +42,5 @@ func NewRespApi() RespApi {
 		message: "Error en conexion con API",
 	}
 }
+
+//practicing builder pattern in this model
