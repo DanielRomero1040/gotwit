@@ -15,7 +15,7 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 	fmt.Println("Voy a procesar " + ctx.Value(models.Key("path")).(string) + " > " + ctx.Value(models.Key("method")).(string))
 	var res = models.NewRespApi()
 
-	isOK, statusCode, msg, claim := checkAuthorization(ctx, request)
+	isOK, statusCode, msg, _ := checkAuthorization(ctx, request)
 
 	if !isOK {
 		res.WithStatus(statusCode).WithMessage(msg)
