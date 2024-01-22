@@ -1,5 +1,5 @@
 git add .
-git commit -m "project structure, models, handlers, secretManager logic, mongoDb conection, AWS conection"
+git commit -m "- tokenProccess finished, updateProfile added, saveTweet, readTweet, deleteTweet "
 git push 
 go build main.go
 del main.zip

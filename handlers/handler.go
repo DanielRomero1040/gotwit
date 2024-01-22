@@ -15,7 +15,7 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 	fmt.Println("Voy a procesar " + ctx.Value(models.Key("path")).(string) + " > " + ctx.Value(models.Key("method")).(string))
 	var res = models.NewRespApi()
 
-	isOK, statusCode, msg, _ := checkAuthorization(ctx, request)
+	isOK, statusCode, msg, claim := checkAuthorization(ctx, request)
 
 	if !isOK {
 		res.WithStatus(statusCode).WithMessage(msg)
@@ -30,20 +30,28 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 
 		case "login":
 			return routers.Login(ctx)
+		case "tweet":
+			return routers.SaveTweet(ctx, claim)
 		}
 		//
 	case "GET":
 		switch ctx.Value(models.Key("path")).(string) {
 		case "viewProfile":
 			return routers.ViewProfile(request)
+		case "readTweet":
+			return routers.ReadTweets(request)
 		}
 		//
 	case "PUT":
 		switch ctx.Value(models.Key("path")).(string) {
+		case "updateProfile":
+			return routers.UpdateProfile(ctx, claim)
 		}
 		//
 	case "DELETE":
 		switch ctx.Value(models.Key("path")).(string) {
+		case "deleteTweet":
+			return routers.DeleteTweet(request, claim)
 		}
 		//
 	}

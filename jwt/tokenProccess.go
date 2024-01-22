@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/DanielRomero1040/gotwit/db"
 	"github.com/DanielRomero1040/gotwit/models"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -29,6 +30,12 @@ func TokenProccess(tk string, JWTSign string) (*models.Claim, bool, string, erro
 
 	if err == nil {
 		//rutina checkea contra db
+		_, found, _ := db.CheckValidUser(claims.Email)
+		if found {
+			Email = claims.Email
+			IDUsuario = claims.ID.Hex()
+		}
+		return &claims, found, IDUsuario, nil
 	}
 	if !tkn.Valid {
 		return &claims, false, string(""), errors.New("Token Invalido")
