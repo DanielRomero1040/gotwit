@@ -1,5 +1,5 @@
 git add .
-git commit -m "- tokenProccess finished, updateProfile added, saveTweet, readTweet, deleteTweet "
+git commit -m "- uploadImgage, newRelation "
 git push 
 go build main.go
 del main.zip

@@ -48,7 +48,7 @@ func Register(ctx context.Context) models.RespApi {
 		return res
 	}
 	if !status {
-		res.WithMessage("No se ha logrado insertar elñ registro de usuario ")
+		res.WithMessage("No se ha logrado insertar el registro de usuario ")
 		fmt.Println(res.GetMessage())
 		return res
 	}

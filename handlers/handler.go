@@ -18,8 +18,9 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 	isOK, statusCode, msg, claim := checkAuthorization(ctx, request)
 
 	if !isOK {
-		res.WithStatus(statusCode).WithMessage(msg)
-		return res
+		return res.
+			WithStatus(statusCode).
+			WithMessage(msg)
 	}
 
 	switch ctx.Value(models.Key("method")).(string) {
@@ -27,12 +28,18 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 		switch ctx.Value(models.Key("path")).(string) {
 		case "register":
 			return routers.Register(ctx)
-
 		case "login":
 			return routers.Login(ctx)
 		case "tweet":
 			return routers.SaveTweet(ctx, claim)
+		case "newRelation":
+			return routers.NewRelation(ctx, request, claim)
+		case "uploadAvatar":
+			return routers.UploadImage(ctx, "A", request, claim)
+		case "uploadBanner":
+			return routers.UploadImage(ctx, "B", request, claim)
 		}
+
 		//
 	case "GET":
 		switch ctx.Value(models.Key("path")).(string) {
@@ -40,6 +47,10 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 			return routers.ViewProfile(request)
 		case "readTweet":
 			return routers.ReadTweets(request)
+		case "getAvatar":
+			return routers.GetImage(ctx, "A", request, claim)
+		case "getBanner":
+			return routers.GetImage(ctx, "B", request, claim)
 		}
 		//
 	case "PUT":

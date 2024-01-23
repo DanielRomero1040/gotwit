@@ -23,7 +23,8 @@ func ExecuteLambda(ctx context.Context, request events.APIGatewayProxyRequest) (
 
 	awsgo.InicializarAWS()
 
-	if !ValidoParametros() {
+	//valido variables de entorno
+	if !EnvVariablesValidation() {
 		res = &events.APIGatewayProxyResponse{
 			StatusCode: 400,
 			Body:       "Error en la variables de entorno. Deben incluir 'SecretName', 'BucketName' y 'UrlPrefix' ",
@@ -46,7 +47,7 @@ func ExecuteLambda(ctx context.Context, request events.APIGatewayProxyRequest) (
 		return res, nil
 	}
 
-	path := strings.Replace(request.PathParameters["gotwit"], os.Getenv("UrlPrefix"), "", -1) //mirar en la apigateway qie sea el mismo prefix
+	path := strings.Replace(request.PathParameters["gotwit"], os.Getenv("UrlPrefix"), "", -1) //mirar en la apigateway que sea el mismo prefix
 
 	awsgo.Ctx = context.WithValue(awsgo.Ctx, models.Key("path"), path)
 	awsgo.Ctx = context.WithValue(awsgo.Ctx, models.Key("method"), request.HTTPMethod)
@@ -70,7 +71,7 @@ func ExecuteLambda(ctx context.Context, request events.APIGatewayProxyRequest) (
 		}
 		return res, nil
 	}
-
+	//handlers / controller
 	respApi := handlers.Handlers(awsgo.Ctx, request)
 
 	if respApi.GetCustomResp() == nil {
@@ -87,16 +88,16 @@ func ExecuteLambda(ctx context.Context, request events.APIGatewayProxyRequest) (
 	}
 }
 
-func ValidoParametros() bool {
-	_, vieneParametro := os.LookupEnv("SecretName")
-	if !vieneParametro {
-		return vieneParametro
+func EnvVariablesValidation() bool {
+	_, envVarExist := os.LookupEnv("SecretName")
+	if !envVarExist {
+		return envVarExist
 	}
-	_, vieneParametro = os.LookupEnv("BucketName")
-	if !vieneParametro {
-		return vieneParametro
+	_, envVarExist = os.LookupEnv("BucketName")
+	if !envVarExist {
+		return envVarExist
 	}
-	_, vieneParametro = os.LookupEnv("UrlPrefix")
+	_, envVarExist = os.LookupEnv("UrlPrefix")
 
-	return vieneParametro
+	return envVarExist
 }
