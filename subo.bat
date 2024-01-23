@@ -1,5 +1,5 @@
 git add .
-git commit -m "- uploadImgage, newRelation "
+git commit -m "- deleteRelation "
 git push 
 go build main.go
 del main.zip
