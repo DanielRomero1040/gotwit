@@ -1,5 +1,5 @@
 git add .
-git commit -m "- getRelation, getAllUsers "
+git commit -m "- getAllTweetsFollowing,  "
 git push 
 go build main.go
 del main.zip

@@ -9,12 +9,10 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func GetAllUsers(request events.APIGatewayProxyRequest, claim models.Claim) models.RespApi {
+func GetAllTweetsFollowing(request events.APIGatewayProxyRequest, claim models.Claim) models.RespApi {
 	resp := models.NewRespApi()
 
 	page := request.QueryStringParameters["page"]
-	typeUser := request.QueryStringParameters["type"]
-	search := request.QueryStringParameters["search"]
 	IDUser := claim.ID.Hex()
 
 	if len(page) < 0 {
@@ -26,20 +24,20 @@ func GetAllUsers(request events.APIGatewayProxyRequest, claim models.Claim) mode
 			WithMessage("Debe enviar el parametro PAGE como entero mayor a 0 " + err.Error())
 	}
 
-	users, status := db.GetAllUsers(IDUser, int64(pagInt), search, typeUser)
+	tweets, status := db.GetAllTweetsFollowing(IDUser, int64(pagInt))
+
 	if !status {
-		return resp.WithMessage("Error al leer los usuarios ")
+		return resp.WithMessage("Error al leer los Tweets ")
 	}
 
-	respJson, err := json.Marshal(users)
+	respJson, err := json.Marshal(tweets)
 	if err != nil {
 		return resp.
 			WithStatus(500).
-			WithMessage("Error al formatear los datos de los usuarios en JSON " + err.Error())
+			WithMessage("Error al formatear los datos de los tweets en JSON " + err.Error())
 	}
 
 	return resp.
 		WithStatus(200).
 		WithMessage(string(respJson))
-
 }

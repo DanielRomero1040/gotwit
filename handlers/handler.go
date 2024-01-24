@@ -53,8 +53,10 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 			return routers.GetImage(ctx, "B", request, claim)
 		case "getRelation":
 			return routers.GetRelation(request, claim)
-		case "getUsers":
-			return routers.GetUsers(request, claim)
+		case "getAllUsers":
+			return routers.GetAllUsers(request, claim)
+		case "getAllTweetsFollowing":
+			return routers.GetAllTweetsFollowing(request, claim)
 		}
 		//
 	case "PUT":
