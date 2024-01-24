@@ -1,5 +1,5 @@
 git add .
-git commit -m "- deleteRelation "
+git commit -m "- getRelation, getAllUsers "
 git push 
 go build main.go
 del main.zip
