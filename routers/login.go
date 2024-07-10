@@ -63,7 +63,7 @@ func Login(ctx context.Context) models.RespApi {
 			"Set-Cookie":                  cookieString,
 		},
 	}
-	return resp.
+	return *resp.
 		WithStatus(200).
 		WithMessage(string(token)).
 		WithCustomResp(resGateway)

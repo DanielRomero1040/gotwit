@@ -43,20 +43,20 @@ func UploadImage(ctx context.Context, typeImage string, request events.APIGatewa
 
 	mediaType, params, err := mime.ParseMediaType(request.Headers["Content-Type"])
 	if err != nil {
-		return res.
+		return *res.
 			WithStatus(500).
 			WithMessage(err.Error())
 	}
 
 	if !strings.HasPrefix(mediaType, "multipart/") {
-		return res.
+		return *res.
 			WithMessage("Debe enviar una imagen con el 'content-Type' de tipo 'multipart/' en el header ").
 			WithStatus(400)
 	}
 
 	body, err := base64.StdEncoding.DecodeString(request.Body)
 	if err != nil {
-		return res.
+		return *res.
 			WithStatus(500).
 			WithMessage(err.Error())
 	}
@@ -65,7 +65,7 @@ func UploadImage(ctx context.Context, typeImage string, request events.APIGatewa
 	p, err := multipartReader.NextPart()
 
 	if err != nil && err != io.EOF {
-		return res.
+		return *res.
 			WithStatus(500).
 			WithMessage(err.Error())
 	}
@@ -74,7 +74,7 @@ func UploadImage(ctx context.Context, typeImage string, request events.APIGatewa
 		if p.FileName() != "" {
 			buf := bytes.NewBuffer(nil)
 			if _, err := io.Copy(buf, p); err != nil {
-				return res.
+				return *res.
 					WithStatus(500).
 					WithMessage(err.Error())
 			}
@@ -83,7 +83,7 @@ func UploadImage(ctx context.Context, typeImage string, request events.APIGatewa
 			})
 
 			if err != nil {
-				return res.
+				return *res.
 					WithStatus(500).
 					WithMessage(err.Error())
 			}
@@ -95,7 +95,7 @@ func UploadImage(ctx context.Context, typeImage string, request events.APIGatewa
 				Body:   &readSeeker{buf},
 			})
 			if err != nil {
-				return res.
+				return *res.
 					WithStatus(500).
 					WithMessage(err.Error())
 			}
@@ -103,12 +103,12 @@ func UploadImage(ctx context.Context, typeImage string, request events.APIGatewa
 	}
 	status, err := db.UpdateRegister(user, IDUser)
 	if err != nil || !status {
-		return res.
+		return *res.
 			WithStatus(400).
 			WithMessage("Error al modificar registro del usuario " + err.Error())
 	}
 
-	return res.
+	return *res.
 		WithStatus(200).
 		WithMessage("Imagen uploaded ok! ")
 }

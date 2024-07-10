@@ -15,7 +15,7 @@ func ReadTweets(request events.APIGatewayProxyRequest) models.RespApi {
 	ID := request.QueryStringParameters["id"]
 	pagina := request.QueryStringParameters["pagina"]
 	if len(ID) < 1 {
-		return resp.
+		return *resp.
 			WithMessage("El parametro ID es obligatorio")
 	}
 	if len(pagina) < 1 {
@@ -24,22 +24,22 @@ func ReadTweets(request events.APIGatewayProxyRequest) models.RespApi {
 
 	pag, err := strconv.Atoi(pagina)
 	if err != nil {
-		return resp.
+		return *resp.
 			WithMessage("Debe enviar el parametro pagina como un valor mayor a 0 ")
 	}
 
 	tweets, ok := db.ReadTweets(ID, int64(pag))
 	if !ok {
-		return resp.
+		return *resp.
 			WithMessage("Error al leer los tweets ")
 	}
 	respJson, err := json.Marshal(tweets)
 	if err != nil {
-		return resp.
+		return *resp.
 			WithMessage("Error al formatear los datos de los usuarios como JSON ").
 			WithStatus(500)
 	}
-	return resp.
+	return *resp.
 		WithStatus(200).
 		WithMessage(string(respJson))
 }

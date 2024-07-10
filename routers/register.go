@@ -14,6 +14,7 @@ func Register(ctx context.Context) models.RespApi {
 	var res = models.NewRespApi()
 
 	fmt.Println("Entre a Register")
+
 	body := ctx.Value(models.Key("body")).(string)
 	err := json.Unmarshal([]byte(body), &t)
 	if err != nil {
@@ -42,6 +43,8 @@ func Register(ctx context.Context) models.RespApi {
 	}
 
 	_, status, err := db.InsertResgister(t)
+	fmt.Println("err---> ", err)
+	fmt.Println("status---> ", status)
 	if err != nil {
 		res.WithMessage("ocurrio un error al intentar insertar el registro de usuario " + err.Error())
 		fmt.Println(res.GetMessage())
@@ -55,5 +58,6 @@ func Register(ctx context.Context) models.RespApi {
 
 	res.WithStatus(200).WithMessage("Registro OK")
 	fmt.Println(res.GetMessage())
+	fmt.Println("registro OK")
 	return res
 }

@@ -13,7 +13,7 @@ func GetRelation(request events.APIGatewayProxyRequest, claim models.Claim) mode
 
 	ID := request.QueryStringParameters["id"]
 	if len(ID) < 1 {
-		return resp.
+		return *resp.
 			WithMessage("El parametro ID es obligatorio ")
 	}
 	var relation models.Relation
@@ -28,11 +28,11 @@ func GetRelation(request events.APIGatewayProxyRequest, claim models.Claim) mode
 
 	respJson, err := json.Marshal(respRelation)
 	if err != nil {
-		return resp.
+		return *resp.
 			WithStatus(500).
 			WithMessage("Error al formatear los datos de los usuarios como JSON " + err.Error())
 	}
-	return resp.
+	return *resp.
 		WithStatus(200).
 		WithMessage(string(respJson))
 

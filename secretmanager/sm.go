@@ -12,7 +12,7 @@ import (
 
 func GetSecret(secretName string) (models.Secret, error) {
 	var datosSecret models.Secret
-	fmt.Println("-> Pido secreto" + secretName)
+	fmt.Println("-> Pido secreto " + secretName)
 	smc := secretsmanager.NewFromConfig(awsgo.Cfg)
 	clave, err := smc.GetSecretValue(awsgo.Ctx, &secretsmanager.GetSecretValueInput{
 		SecretId: aws.String(secretName),

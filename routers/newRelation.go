@@ -13,7 +13,7 @@ func NewRelation(ctx context.Context, request events.APIGatewayProxyRequest, cla
 
 	ID := request.QueryStringParameters["id"]
 	if len(ID) < 1 {
-		return resp.
+		return *resp.
 			WithMessage("El parametro ID es obligatorio ")
 	}
 
@@ -25,16 +25,16 @@ func NewRelation(ctx context.Context, request events.APIGatewayProxyRequest, cla
 	status, err := db.InsertRelation(relation)
 
 	if err != nil {
-		return resp.
+		return *resp.
 			WithMessage("Ocurrio un error al intentar guardar la relacion " + err.Error())
 	}
 
 	if !status {
-		return resp.
+		return *resp.
 			WithMessage("No se ha logrado insertar la relacion ")
 	}
 
-	return resp.
+	return *resp.
 		WithStatus(200).
 		WithMessage("Alta Relacion OK ")
 }

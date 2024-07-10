@@ -19,12 +19,12 @@ func GetImage(ctx context.Context, typeImage string, request events.APIGatewayPr
 
 	ID := request.QueryStringParameters["id"]
 	if len(ID) < 1 {
-		return resp.
+		return *resp.
 			WithMessage("El parametro ID es obligatorio ")
 	}
 	profile, err := db.FindProfile(ID)
 	if err != nil {
-		return resp.
+		return *resp.
 			WithMessage("Usuario no encontrado " + err.Error())
 	}
 	var filename string
@@ -41,7 +41,7 @@ func GetImage(ctx context.Context, typeImage string, request events.APIGatewayPr
 
 	file, err := downloadFromS3(ctx, svc, filename)
 	if err != nil {
-		return resp.
+		return *resp.
 			WithStatus(500).
 			WithMessage("Error descargando el archivo s3 " + err.Error())
 	}
@@ -55,7 +55,7 @@ func GetImage(ctx context.Context, typeImage string, request events.APIGatewayPr
 		},
 	}
 
-	return resp.WithCustomResp(customResp)
+	return *resp.WithCustomResp(customResp)
 }
 
 func downloadFromS3(ctx context.Context, svc *s3.Client, filename string) (*bytes.Buffer, error) {

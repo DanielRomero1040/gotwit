@@ -18,7 +18,7 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 	isOK, statusCode, msg, claim := checkAuthorization(ctx, request)
 
 	if !isOK {
-		return res.
+		return *res.
 			WithStatus(statusCode).
 			WithMessage(msg)
 	}
@@ -80,7 +80,7 @@ func Handlers(ctx context.Context, request events.APIGatewayProxyRequest) models
 }
 
 var freePath = []string{
-	"registro", "login", "getAvatar", "getBanner",
+	"register", "login", "getAvatar", "getBanner",
 }
 
 func checkAuthorization(ctx context.Context, request events.APIGatewayProxyRequest) (bool, int, string, models.Claim) {

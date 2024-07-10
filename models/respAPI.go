@@ -8,17 +8,17 @@ type RespApi struct {
 	customResp *events.APIGatewayProxyResponse
 }
 
-func (r RespApi) WithStatus(status int) RespApi {
+func (r *RespApi) WithStatus(status int) *RespApi {
 	r.status = status
 	return r
 }
 
-func (r RespApi) WithMessage(message string) RespApi {
+func (r *RespApi) WithMessage(message string) *RespApi {
 	r.message = message
 	return r
 }
 
-func (r RespApi) WithCustomResp(customResp *events.APIGatewayProxyResponse) RespApi {
+func (r *RespApi) WithCustomResp(customResp *events.APIGatewayProxyResponse) *RespApi {
 	r.customResp = customResp
 	return r
 }

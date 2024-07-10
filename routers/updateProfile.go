@@ -15,17 +15,17 @@ func UpdateProfile(ctx context.Context, claim models.Claim) models.RespApi {
 	body := ctx.Value(models.Key("body")).(string)
 	err := json.Unmarshal([]byte(body), &user)
 	if err != nil {
-		return resp.WithMessage("Datos incorrectos " + err.Error())
+		return *resp.WithMessage("Datos incorrectos " + err.Error())
 	}
 	status, err := db.UpdateRegister(user, claim.ID.Hex())
 	if err != nil {
-		return resp.WithMessage("ocurrio un error al intentar modificar el registro " + err.Error())
+		return *resp.WithMessage("ocurrio un error al intentar modificar el registro " + err.Error())
 	}
 
 	if !status {
-		return resp.WithMessage("No se ha logrado modificar el registro ")
+		return *resp.WithMessage("No se ha logrado modificar el registro ")
 	}
-	return resp.
+	return *resp.
 		WithStatus(200).
 		WithMessage("Modificacion de profile OK ")
 }

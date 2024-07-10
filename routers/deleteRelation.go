@@ -11,7 +11,7 @@ func DeleteRelation(request events.APIGatewayProxyRequest, claim models.Claim) m
 
 	ID := request.QueryStringParameters["id"]
 	if len(ID) < 1 {
-		return resp.
+		return *resp.
 			WithMessage("El parametro ID es obligatorio ")
 	}
 	var relation models.Relation
@@ -22,16 +22,16 @@ func DeleteRelation(request events.APIGatewayProxyRequest, claim models.Claim) m
 	status, err := db.DeleteRelation(relation)
 
 	if err != nil {
-		return resp.
+		return *resp.
 			WithMessage("Ocurrio un error al intentar eliminar la relacion " + err.Error())
 	}
 
 	if !status {
-		return resp.
+		return *resp.
 			WithMessage("No se ha logrado eliminar la relacion ")
 	}
 
-	return resp.
+	return *resp.
 		WithStatus(200).
 		WithMessage("Baja Relacion OK ")
 }

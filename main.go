@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"strings"
 
@@ -89,6 +90,7 @@ func ExecuteLambda(ctx context.Context, request events.APIGatewayProxyRequest) (
 }
 
 func EnvVariablesValidation() bool {
+	fmt.Println("Cargando variables de entorno ")
 	_, envVarExist := os.LookupEnv("SecretName")
 	if !envVarExist {
 		return envVarExist

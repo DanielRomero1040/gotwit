@@ -37,5 +37,5 @@ func SaveTweet(ctx context.Context, claim models.Claim) models.RespApi {
 		return res
 	}
 
-	return res.WithStatus(200).WithMessage("Tweet Creado Correctamente ")
+	return *res.WithStatus(200).WithMessage("Tweet Creado Correctamente ")
 }
