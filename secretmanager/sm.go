@@ -12,9 +12,9 @@ import (
 
 func GetSecret(secretName string) (models.Secret, error) {
 	var datosSecret models.Secret
-	fmt.Println("-> Pido secreto" + secretName)
-	svc := secretsmanager.NewFromConfig(awsgo.Cfg)
-	clave, err := svc.GetSecretValue(awsgo.Ctx, &secretsmanager.GetSecretValueInput{
+	fmt.Println("-> Pido secreto " + secretName)
+	smc := secretsmanager.NewFromConfig(awsgo.Cfg)
+	clave, err := smc.GetSecretValue(awsgo.Ctx, &secretsmanager.GetSecretValueInput{
 		SecretId: aws.String(secretName),
 	})
 	if err != nil {
@@ -22,7 +22,7 @@ func GetSecret(secretName string) (models.Secret, error) {
 		return datosSecret, err
 
 	}
-	json.Unmarshal([]byte(*clave.SecretString), &datosSecret)
+	err = json.Unmarshal([]byte(*clave.SecretString), &datosSecret)
 	fmt.Println("-> Lectura de Secret OK " + secretName)
 	return datosSecret, err
 }
